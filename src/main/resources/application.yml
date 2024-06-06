@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: api-gateway
+
+  ##GATEWAY CONFIGURATIONS
+
+  cloud:
+    gateway:
+      routes:
+        ## user_management_service
+        - id: user_management
+          uri: lb://user_management
+          predicates:
+            - Path=/user_management/**
+          filters:
+            - StripPrefix=1
+            ## service2
+        - id: service1
+          uri: lb://service1
+          predicates:
+            - Path=/service1/**
+          filters:
+            - StripPrefix=1
+        ## schedulingService
+        - id: schedulingService
+          uri: lb://schedulingService
+          predicates:
+            - Path=/schedulingService/**
+          filters:
+            - StripPrefix=1
+server:
+  port: 8585
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
